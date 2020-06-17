@@ -12,14 +12,11 @@ namespace NoughtsAndCrosses
 
         private static bool victory = false;
 
-        private static bool staleMate = false;
-
         private static string player1 = "Player 1";
         
         private static string player2 = "Player 2";
 
         private static string winnerShape = "";
-
         static void Main()
         {
             GetPlayerNames();
@@ -28,7 +25,6 @@ namespace NoughtsAndCrosses
                 MakeBoard();
                 ProcessTurn();
                 CheckForVictory();
-                CheckForStaleMate();
                 TogglePlayer();
             }
 
@@ -37,6 +33,7 @@ namespace NoughtsAndCrosses
             Console.ReadKey();
         }
 
+<<<<<<< HEAD
         private static void CheckForStaleMate()
         {
             if (board[0] != "1"  && board[1] != "2" && board[2] != "3" && board[3] != "4" && board[4] != "5" && board[5] != "6" && board[6] != "7" && board[7] != "8" && board[8] != "9")
@@ -46,22 +43,17 @@ namespace NoughtsAndCrosses
             
         }
 
+=======
+>>>>>>> parent of 7970217... Implemented game ending at stalemate
         private static void DisplayWinner()
         {
-            if (staleMate == false)
+            if (winnerShape == "X")
             {
-                if (winnerShape == "X")
-                {
-                    Console.WriteLine("Congratulations " + player1 + "," + EOL + "You Are The Winner!");
-                }
-                else
-                {
-                    Console.WriteLine("Congratulations " + player2 + "," + EOL + "You Are The Winner!");
-                }
+                Console.WriteLine("Congratulations " + player1 + "," + EOL + "You Are The Winner!");
             }
             else
             {
-                Console.WriteLine("Game Over" + EOL + "No Winners This Time");
+                Console.WriteLine("Congratulations " + player2 + "," + EOL + "You Are The Winner!");
             }
         }
 
