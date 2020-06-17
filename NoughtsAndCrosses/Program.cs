@@ -10,7 +10,9 @@ namespace NoughtsAndCrosses
 
         private static bool isP1 = true;
 
-        private static bool victory = false;
+        private static bool gameOver = false;
+
+        private static bool stalemate = false;
 
         private static string player1 = "Player 1";
         
@@ -20,11 +22,12 @@ namespace NoughtsAndCrosses
         static void Main()
         {
             GetPlayerNames();
-            while (!victory)
+            while (!gameOver)
             {
                 MakeBoard();
                 ProcessTurn();
                 CheckForVictory();
+                CheckForStalemate();
                 TogglePlayer();
             }
 
@@ -35,13 +38,20 @@ namespace NoughtsAndCrosses
 
         private static void DisplayWinner()
         {
-            if (winnerShape == "X")
+            if (stalemate == false)
             {
-                Console.WriteLine("Congratulations " + player1 + "," + EOL + "You Are The Winner!");
+                if (winnerShape == "X")
+                {
+                    Console.WriteLine("Congratulations " + player1 + "," + EOL + "You Are The Winner!");
+                }
+                else
+                {
+                    Console.WriteLine("Congratulations " + player2 + "," + EOL + "You Are The Winner!");
+                }
             }
             else
             {
-                Console.WriteLine("Congratulations " + player2 + "," + EOL + "You Are The Winner!");
+                Console.WriteLine(EOL + "Game Over" + EOL + "No Winners This Time");
             }
         }
 
@@ -64,9 +74,19 @@ namespace NoughtsAndCrosses
                 if (board[patterns[i][0]] == board[patterns[i][1]] && board[patterns[i][1]] == board[patterns[i][2]])
                 {
                     winnerShape = board[patterns[i][0]];
-                    victory = true;
+                    gameOver = true;
                 }
             }
+        }
+
+        private static void CheckForStalemate()
+        {
+            if (board[0] != "1" && board[1] != "2" && board[2] != "3" && board[3] != "4" && board[4] != "5" && board[5] != "6" && board[6] != "7" && board[7] != "8" && board[8] != "9")
+            {
+                gameOver = true;
+                stalemate = true;
+            }
+
         }
 
         private static void GetPlayerNames()
