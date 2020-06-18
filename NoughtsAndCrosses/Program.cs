@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Linq;
 using System.Runtime.CompilerServices;
 
 namespace NoughtsAndCrosses
@@ -10,6 +11,10 @@ namespace NoughtsAndCrosses
         private static readonly string[] boardTemplate = { "1", "2", "3", "4", "5", "6", "7", "8", "9" };
 
         private static readonly string[] board = { "1", "2", "3", "4", "5", "6", "7", "8", "9" };
+
+        private static readonly string[] yesOptions = { "y", "yes" };
+
+        private static readonly string[] noOptions = { "n", "no" };
 
         private static bool isP1 = true;
 
@@ -55,6 +60,7 @@ namespace NoughtsAndCrosses
 
             MakeBoard();
             DisplayWinner();
+            AskQuestion("Press enter to continue");
             TogglePlayAgain();
             ResetBoard();
         }
@@ -73,21 +79,7 @@ namespace NoughtsAndCrosses
 
         private static void TogglePlayAgain()
         {
-            string errorMessage = "";
-            while (playAgainAnswer != "Y" && playAgainAnswer != "N" && playAgainAnswer != "y" && playAgainAnswer != "n" && playAgainAnswer != "yes" && playAgainAnswer != "no" && playAgainAnswer != "Yes" && playAgainAnswer != "No")
-            {
-                MakeBoard();
-                playAgainAnswer = AskQuestion("Play Again?" + EOL + "  (Y/N)", errorMessage);
-                errorMessage = "Try Again";
-            }
-            if (playAgainAnswer == "Y" || playAgainAnswer == "y" || playAgainAnswer == "yes" || playAgainAnswer == "Yes")
-            {
-                playAgain = true;
-            }
-            if (playAgainAnswer == "N" || playAgainAnswer == "n" || playAgainAnswer == "no" || playAgainAnswer == "No")
-            {
-                playAgain = false;
-            }
+            playAgain = AskYesNoQuestion("Play Again?" + EOL + "  (Y/N)");
         }
 
         private static void DisplayWinner()
@@ -214,11 +206,26 @@ namespace NoughtsAndCrosses
             return Console.ReadLine();
         }
 
+        private static bool AskYesNoQuestion(string question)
+        {
+            while (true)
+            {
+                MakeBoard();
+                string answer = AskQuestion(question, "Enter a Yes/No value");
+                if (yesOptions.Contains(answer.ToLower()))
+                {
+                    return true;
+                }
+                if (noOptions.Contains(answer.ToLower()))
+                {
+                    return false;
+                }
+            }
+        }
+
         private static int AskForInt(string question, string errorMessage = "")
         {
-            int value;
-
-            if (!int.TryParse(AskQuestion(question, errorMessage), out value))
+            if (!int.TryParse(AskQuestion(question, errorMessage), out int value))
             {
                 MakeBoard();
                 return AskForInt(question, "Try Again");
