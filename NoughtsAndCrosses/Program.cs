@@ -1,10 +1,13 @@
 ﻿using System;
+using System.Runtime.CompilerServices;
 
 namespace NoughtsAndCrosses
 {
-    class Program //make method to clear screen  and store the shit
+    class Program 
     {
         private static readonly string EOL = Environment.NewLine;
+
+        private static readonly string[] boardTemplate = { "1", "2", "3", "4", "5", "6", "7", "8", "9" };
 
         private static readonly string[] board = { "1", "2", "3", "4", "5", "6", "7", "8", "9" };
 
@@ -14,14 +17,33 @@ namespace NoughtsAndCrosses
 
         private static bool stalemate = false;
 
+        private static bool playAgain = true;
+
         private static string player1 = "Player 1";
         
         private static string player2 = "Player 2";
 
         private static string winnerShape = "";
+
+        private static string playAgainAnswer = "";
+
+        private static int player1Score = 0;
+
+        private static int player2Score = 0;
+
+        private static int stalemateCount = 0;
+
         static void Main()
         {
             GetPlayerNames();
+            while (playAgain)
+            {
+                GameLoop();
+            }
+        }
+
+        private static void GameLoop()
+        {
             while (!gameOver)
             {
                 MakeBoard();
@@ -33,7 +55,39 @@ namespace NoughtsAndCrosses
 
             MakeBoard();
             DisplayWinner();
-            Console.ReadKey();
+            TogglePlayAgain();
+            ResetBoard();
+        }
+
+        private static void ResetBoard()
+        {
+            for (int i = 0; i < board.Length; i++)
+            {
+                board[i] = boardTemplate[i];
+                gameOver = false;
+                stalemate = false;
+                playAgainAnswer = "";
+                winnerShape = "";
+            }
+        }
+
+        private static void TogglePlayAgain()
+        {
+            string errorMessage = "";
+            while (playAgainAnswer != "Y" && playAgainAnswer != "N" && playAgainAnswer != "y" && playAgainAnswer != "n" && playAgainAnswer != "yes" && playAgainAnswer != "no" && playAgainAnswer != "Yes" && playAgainAnswer != "No")
+            {
+                MakeBoard();
+                playAgainAnswer = AskQuestion("Play Again?" + EOL + "  (Y/N)", errorMessage);
+                errorMessage = "Try Again";
+            }
+            if (playAgainAnswer == "Y" || playAgainAnswer == "y" || playAgainAnswer == "yes" || playAgainAnswer == "Yes")
+            {
+                playAgain = true;
+            }
+            if (playAgainAnswer == "N" || playAgainAnswer == "n" || playAgainAnswer == "no" || playAgainAnswer == "No")
+            {
+                playAgain = false;
+            }
         }
 
         private static void DisplayWinner()
@@ -43,16 +97,19 @@ namespace NoughtsAndCrosses
                 if (winnerShape == "X")
                 {
                     Console.WriteLine("Congratulations " + player1 + "," + EOL + "You Are The Winner!");
+                    player1Score++;
                 }
                 else
                 {
                     Console.WriteLine("Congratulations " + player2 + "," + EOL + "You Are The Winner!");
+                    player2Score++;
                 }
             }
             else
             {
                 Console.WriteLine(EOL + "Game Over" + EOL + "No Winners This Time");
-            }
+                stalemateCount++;
+            } 
         }
 
         private static void CheckForVictory()
@@ -118,7 +175,7 @@ namespace NoughtsAndCrosses
                     move = AskForInt(player2 + ", enter your move", errorMessage);
                 }
                 move -= 1;
-                errorMessage = "try again dipshit";
+                errorMessage = "Try Again";
             }
 
             PlaceMove(move);
@@ -164,7 +221,7 @@ namespace NoughtsAndCrosses
             if (!int.TryParse(AskQuestion(question, errorMessage), out value))
             {
                 MakeBoard();
-                return AskForInt(question, "Try Again!");
+                return AskForInt(question, "Try Again");
             }
 
             return value;
@@ -173,6 +230,9 @@ namespace NoughtsAndCrosses
         private static void MakeBoard()
         {
             ClearScreen();
+            Console.WriteLine(player1 + " " + player1Score + ":" + player2Score + " " + player2);
+            Console.WriteLine(EOL);
+            Console.WriteLine("Stalemates: " + stalemateCount);
             Console.WriteLine(EOL);
             Console.WriteLine(player1 + " = X");
             Console.WriteLine(player2 + " = O");
