@@ -30,7 +30,7 @@ namespace NoughtsAndCrosses
 
         private static string winnerShape = "";
 
-        private static string playAgainAnswer = "";
+        private static string playAgainAnswer = string.Empty;
 
         private static int player1Score = 0;
 
@@ -40,6 +40,7 @@ namespace NoughtsAndCrosses
 
         static void Main()
         {
+            ResetConsoleColors();
             GetPlayerNames();
             while (playAgain)
             {
@@ -143,6 +144,13 @@ namespace NoughtsAndCrosses
             player1 = AskQuestion(player1 + ", enter your name:");
             ClearScreen();
             player2 = AskQuestion(player2 + ", enter your name:");
+        }
+
+        private static void ResetConsoleColors()
+        {
+            Console.ForegroundColor = ConsoleColor.Black;
+            Console.BackgroundColor = ConsoleColor.White;
+            ClearScreen();
         }
 
         private static void TogglePlayer()
