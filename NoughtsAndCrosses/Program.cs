@@ -90,18 +90,18 @@ namespace NoughtsAndCrosses
             {
                 if (winnerShape == "X")
                 {
-                    consoleService.Print("Congratulations " + player1 + "," + EOL + "You Are The Winner!");
+                    consoleService.PrintLine("Congratulations " + player1 + "," + EOL + "You Are The Winner!");
                     player1Score++;
                 }
                 else
                 {
-                    consoleService.Print("Congratulations " + player2 + "," + EOL + "You Are The Winner!");
+                    consoleService.PrintLine("Congratulations " + player2 + "," + EOL + "You Are The Winner!");
                     player2Score++;
                 }
             }
             else
             {
-                consoleService.Print(EOL + "Game Over" + EOL + "No Winners This Time");
+                consoleService.PrintLine(EOL + "Game Over" + EOL + "No Winners This Time");
                 stalemateCount++;
             } 
         }
@@ -211,20 +211,20 @@ namespace NoughtsAndCrosses
         private static void MakeBoard()
         {
             consoleService.ClearScreen();
-            consoleService.Print(player1 + " " + player1Score + ":" + player2Score + " " + player2);
-            consoleService.Print(EOL);
-            consoleService.Print("Stalemates: " + stalemateCount);
-            consoleService.Print(EOL);
-            consoleService.Print(player1 + " = X");
-            consoleService.Print(player2 + " = O");
-            consoleService.Print(EOL);
-            consoleService.Print("-------------");
-            consoleService.Print("| " + board[0] + " | " + board[1] + " | " + board[2] + " |");
-            consoleService.Print("-------------");
-            consoleService.Print("| " + board[3] + " | " + board[4] + " | " + board[5] + " |");
-            consoleService.Print("-------------");
-            consoleService.Print("| " + board[6] + " | " + board[7] + " | " + board[8] + " |");
-            consoleService.Print("-------------");
+            consoleService.PrintLine(player1 + " " + player1Score + ":" + player2Score + " " + player2);
+            consoleService.PrintLine(EOL);
+            consoleService.PrintLine("Stalemates: " + stalemateCount);
+            consoleService.PrintLine(EOL);
+            consoleService.PrintLine(player1 + " = X");
+            consoleService.PrintLine(player2 + " = O");
+            consoleService.PrintLine(EOL);
+            consoleService.PrintLine("-------------");
+            consoleService.PrintLine("| " + board[0] + " | " + board[1] + " | " + board[2] + " |");
+            consoleService.PrintLine("-------------");
+            consoleService.PrintLine("| " + board[3] + " | " + board[4] + " | " + board[5] + " |");
+            consoleService.PrintLine("-------------");
+            consoleService.PrintLine("| " + board[6] + " | " + board[7] + " | " + board[8] + " |");
+            consoleService.PrintLine("-------------");
         }
     }
 }

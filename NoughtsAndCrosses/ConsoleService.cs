@@ -10,14 +10,35 @@ namespace NoughtsAndCrosses
         private static readonly string EOL = Environment.NewLine;
         private readonly string[] yesValues = new string[] { "y", "yes", "true", "1" };
 
-        public void Print(string line = "")
+        public void PrintLine(string line = "", ConsoleColor? foregroundColor = null, ConsoleColor? backgroundColor = null)
         {
-            Console.WriteLine(line);
+            Print(line, foregroundColor, backgroundColor);
+            Console.WriteLine();
+        }
+        
+        public void Print(string line = "", ConsoleColor? foregroundColor = null, ConsoleColor? backgroundColor = null)
+        {
+            ConsoleColor previousForegroundColor = Console.ForegroundColor;
+            if (foregroundColor != null)
+            {
+                Console.ForegroundColor = (ConsoleColor)foregroundColor;
+            }
+
+            ConsoleColor previousBackgroundColor = Console.BackgroundColor;
+            if (backgroundColor != null)
+            {
+                Console.BackgroundColor = (ConsoleColor)backgroundColor;
+            }
+
+            Console.Write(line);
+
+            Console.ForegroundColor = previousForegroundColor;
+            Console.BackgroundColor = previousBackgroundColor;
         }
 
         public string AskQuestion(string question, string errorMessage = "")
         {
-            Console.Write(EOL + errorMessage + EOL + EOL + question + EOL + "--> ");
+            Print(EOL + errorMessage + EOL + EOL + question + EOL + "--> ");
             return Console.ReadLine();
         }
         
