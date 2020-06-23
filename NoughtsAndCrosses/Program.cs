@@ -8,6 +8,8 @@ namespace NoughtsAndCrosses
     {
         private static readonly string EOL = Environment.NewLine;
 
+        private static readonly ConsoleService consoleService = new ConsoleService();
+
         private static readonly string[] boardTemplate = { "1", "2", "3", "4", "5", "6", "7", "8", "9" };
 
         private static readonly string[] board = { "1", "2", "3", "4", "5", "6", "7", "8", "9" };
@@ -37,10 +39,9 @@ namespace NoughtsAndCrosses
         private static int player2Score = 0;
 
         private static int stalemateCount = 0;
-
         static void Main()
         {
-            ResetConsoleColors();
+            consoleService.ResetConsoleColors();
             GetPlayerNames();
             while (playAgain)
             {
@@ -61,7 +62,7 @@ namespace NoughtsAndCrosses
 
             MakeBoard();
             DisplayWinner();
-            AskQuestion("Press enter to continue");
+            consoleService.AskQuestion("Press enter to continue");
             TogglePlayAgain();
             ResetBoard();
         }
@@ -80,7 +81,7 @@ namespace NoughtsAndCrosses
 
         private static void TogglePlayAgain()
         {
-            playAgain = AskYesNoQuestion("Play Again?" + EOL + "  (Y/N)");
+            playAgain = consoleService.AskYesNo("Play Again?" + EOL + "  (Y/N)");
         }
 
         private static void DisplayWinner()
@@ -89,18 +90,18 @@ namespace NoughtsAndCrosses
             {
                 if (winnerShape == "X")
                 {
-                    Console.WriteLine("Congratulations " + player1 + "," + EOL + "You Are The Winner!");
+                    consoleService.Print("Congratulations " + player1 + "," + EOL + "You Are The Winner!");
                     player1Score++;
                 }
                 else
                 {
-                    Console.WriteLine("Congratulations " + player2 + "," + EOL + "You Are The Winner!");
+                    consoleService.Print("Congratulations " + player2 + "," + EOL + "You Are The Winner!");
                     player2Score++;
                 }
             }
             else
             {
-                Console.WriteLine(EOL + "Game Over" + EOL + "No Winners This Time");
+                consoleService.Print(EOL + "Game Over" + EOL + "No Winners This Time");
                 stalemateCount++;
             } 
         }
@@ -141,16 +142,9 @@ namespace NoughtsAndCrosses
 
         private static void GetPlayerNames()
         {
-            player1 = AskQuestion(player1 + ", enter your name:");
-            ClearScreen();
-            player2 = AskQuestion(player2 + ", enter your name:");
-        }
-
-        private static void ResetConsoleColors()
-        {
-            Console.ForegroundColor = ConsoleColor.Black;
-            Console.BackgroundColor = ConsoleColor.White;
-            ClearScreen();
+            player1 = consoleService.AskQuestion(player1 + ", enter your name:");
+            consoleService.ClearScreen();
+            player2 = consoleService.AskQuestion(player2 + ", enter your name:");
         }
 
         private static void TogglePlayer()
@@ -203,37 +197,9 @@ namespace NoughtsAndCrosses
             return board[move] != "X" && board[move] != "O";
         }
 
-        private static void ClearScreen()
-        {
-            Console.Clear();
-        }
-
-        private static string AskQuestion(string question, string errorMessage = "")
-        {
-            Console.Write(EOL + errorMessage + EOL + EOL + question + EOL + "--> ");
-            return Console.ReadLine();
-        }
-
-        private static bool AskYesNoQuestion(string question)
-        {
-            while (true)
-            {
-                MakeBoard();
-                string answer = AskQuestion(question, "Enter a Yes/No value");
-                if (yesOptions.Contains(answer.ToLower()))
-                {
-                    return true;
-                }
-                if (noOptions.Contains(answer.ToLower()))
-                {
-                    return false;
-                }
-            }
-        }
-
         private static int AskForInt(string question, string errorMessage = "")
         {
-            if (!int.TryParse(AskQuestion(question, errorMessage), out int value))
+            if (!int.TryParse(consoleService.AskQuestion(question, errorMessage), out int value))
             {
                 MakeBoard();
                 return AskForInt(question, "Try Again");
@@ -244,21 +210,21 @@ namespace NoughtsAndCrosses
 
         private static void MakeBoard()
         {
-            ClearScreen();
-            Console.WriteLine(player1 + " " + player1Score + ":" + player2Score + " " + player2);
-            Console.WriteLine(EOL);
-            Console.WriteLine("Stalemates: " + stalemateCount);
-            Console.WriteLine(EOL);
-            Console.WriteLine(player1 + " = X");
-            Console.WriteLine(player2 + " = O");
-            Console.WriteLine(EOL);
-            Console.WriteLine("-------------");
-            Console.WriteLine("| " + board[0] + " | " + board[1] + " | " + board[2] + " |");
-            Console.WriteLine("-------------");
-            Console.WriteLine("| " + board[3] + " | " + board[4] + " | " + board[5] + " |");
-            Console.WriteLine("-------------");
-            Console.WriteLine("| " + board[6] + " | " + board[7] + " | " + board[8] + " |");
-            Console.WriteLine("-------------");
+            consoleService.ClearScreen();
+            consoleService.Print(player1 + " " + player1Score + ":" + player2Score + " " + player2);
+            consoleService.Print(EOL);
+            consoleService.Print("Stalemates: " + stalemateCount);
+            consoleService.Print(EOL);
+            consoleService.Print(player1 + " = X");
+            consoleService.Print(player2 + " = O");
+            consoleService.Print(EOL);
+            consoleService.Print("-------------");
+            consoleService.Print("| " + board[0] + " | " + board[1] + " | " + board[2] + " |");
+            consoleService.Print("-------------");
+            consoleService.Print("| " + board[3] + " | " + board[4] + " | " + board[5] + " |");
+            consoleService.Print("-------------");
+            consoleService.Print("| " + board[6] + " | " + board[7] + " | " + board[8] + " |");
+            consoleService.Print("-------------");
         }
     }
 }
