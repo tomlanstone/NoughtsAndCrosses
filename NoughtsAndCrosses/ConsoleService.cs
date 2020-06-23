@@ -48,6 +48,16 @@ namespace NoughtsAndCrosses
             return yesValues.Contains(answer.ToLower());
         }
 
+        public void SetBackgroundColor(ConsoleColor color)
+        {
+            Console.BackgroundColor = color;
+        }
+
+        public void SetForegroundColor(ConsoleColor color)
+        {
+            Console.ForegroundColor = color;
+        }
+
         public void ResetConsoleColors()
         {
             Console.ForegroundColor = ConsoleColor.Black;

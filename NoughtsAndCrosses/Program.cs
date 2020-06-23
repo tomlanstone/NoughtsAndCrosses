@@ -215,8 +215,8 @@ namespace NoughtsAndCrosses
             consoleService.PrintLine(EOL);
             consoleService.PrintLine("Stalemates: " + stalemateCount);
             consoleService.PrintLine(EOL);
-            consoleService.PrintLine(player1 + " = X");
-            consoleService.PrintLine(player2 + " = O");
+            consoleService.PrintLine(player1 + " = X"); //split up for colours
+            consoleService.PrintLine(player2 + " = O"); //split up for colours
             consoleService.PrintLine(EOL);
             consoleService.PrintLine("-------------");
             consoleService.PrintLine("| " + board[0] + " | " + board[1] + " | " + board[2] + " |");
