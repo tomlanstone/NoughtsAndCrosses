@@ -69,5 +69,16 @@ namespace NoughtsAndCrosses
         {
             Console.Clear();
         }
+
+        public void PrintPlayerColor(string value, Player player)
+        {
+            if (player == Player.One)
+            {
+                Print(value, ConsoleColor.Blue);
+                return;
+            }
+
+            Print(value, ConsoleColor.Red);
+        }
     }
 }

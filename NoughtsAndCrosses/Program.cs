@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Linq;
+using System.Net.Http.Headers;
 using System.Runtime.CompilerServices;
 
 namespace NoughtsAndCrosses
@@ -53,14 +54,14 @@ namespace NoughtsAndCrosses
         {
             while (!gameOver)
             {
-                MakeBoard();
+                PrintGame();
                 ProcessTurn();
                 CheckForVictory();
                 CheckForStalemate();
                 TogglePlayer();
             }
 
-            MakeBoard();
+            PrintGame();
             DisplayWinner();
             consoleService.AskQuestion("Press enter to continue");
             TogglePlayAgain();
@@ -90,12 +91,16 @@ namespace NoughtsAndCrosses
             {
                 if (winnerShape == "X")
                 {
-                    consoleService.PrintLine("Congratulations " + player1 + "," + EOL + "You Are The Winner!");
+                    consoleService.Print("Congratulations ");
+                    consoleService.PrintPlayerColor(player1, Player.One);
+                    consoleService.Print("," + EOL + "You Are The Winner!");
                     player1Score++;
                 }
                 else
                 {
-                    consoleService.PrintLine("Congratulations " + player2 + "," + EOL + "You Are The Winner!");
+                    consoleService.Print("Congratulations ");
+                    consoleService.PrintPlayerColor(player2, Player.Two);
+                    consoleService.Print("," + EOL + "You Are The Winner!");
                     player2Score++;
                 }
             }
@@ -132,7 +137,7 @@ namespace NoughtsAndCrosses
 
         private static void CheckForStalemate()
         {
-            if (board[0] != "1" && board[1] != "2" && board[2] != "3" && board[3] != "4" && board[4] != "5" && board[5] != "6" && board[6] != "7" && board[7] != "8" && board[8] != "9")
+            if (board[0] != "1" && board[1] != "2" && board[2] != "3" && board[3] != "4" && board[4] != "5" && board[5] != "6" && board[6] != "7" && board[7] != "8" && board[8] != "9" && gameOver == false)
             {
                 gameOver = true;
                 stalemate = true;
@@ -159,14 +164,16 @@ namespace NoughtsAndCrosses
 
             while (!ValidateMove(move))
             {
-                MakeBoard();
+                PrintGame();
                 if (isP1)
                 {
-                    move = AskForInt(player1 + ", enter your move", errorMessage);
+                    consoleService.PrintPlayerColor(player1, Player.One);
+                    move = AskForInt(", enter your move", errorMessage);
                 }
                 else
                 {
-                    move = AskForInt(player2 + ", enter your move", errorMessage);
+                    consoleService.PrintPlayerColor(player2, Player.Two);
+                    move = AskForInt(", enter your move", errorMessage);
                 }
                 move -= 1;
                 errorMessage = "Try Again";
@@ -201,30 +208,80 @@ namespace NoughtsAndCrosses
         {
             if (!int.TryParse(consoleService.AskQuestion(question, errorMessage), out int value))
             {
-                MakeBoard();
+                PrintGame();
                 return AskForInt(question, "Try Again");
             }
 
             return value;
         }
 
-        private static void MakeBoard()
+        private static void PrintGame()
         {
             consoleService.ClearScreen();
-            consoleService.PrintLine(player1 + " " + player1Score + ":" + player2Score + " " + player2);
+            PrintScores();
             consoleService.PrintLine(EOL);
-            consoleService.PrintLine("Stalemates: " + stalemateCount);
+            PrintPlayerSymbols();
             consoleService.PrintLine(EOL);
-            consoleService.PrintLine(player1 + " = X"); //split up for colours
-            consoleService.PrintLine(player2 + " = O"); //split up for colours
-            consoleService.PrintLine(EOL);
-            consoleService.PrintLine("-------------");
+            PrintBoard();
+        }
+
+        private static void PrintBoard()
+        {
+            /*consoleService.PrintLine("-------------");
             consoleService.PrintLine("| " + board[0] + " | " + board[1] + " | " + board[2] + " |");
             consoleService.PrintLine("-------------");
             consoleService.PrintLine("| " + board[3] + " | " + board[4] + " | " + board[5] + " |");
             consoleService.PrintLine("-------------");
             consoleService.PrintLine("| " + board[6] + " | " + board[7] + " | " + board[8] + " |");
             consoleService.PrintLine("-------------");
+*/
+            consoleService.PrintLine("-------------");
+            for (int i = 0; i < board.Length; i++)
+            {
+                consoleService.Print("| ");
+                PrintMove(board[i]);
+                consoleService.Print(" ");
+
+                if ((i + 1) % 3 == 0)
+                {
+                    consoleService.PrintLine("|" + EOL + "-------------");
+                }
+            }
+        }
+
+        private static void PrintMove(string move)
+        {
+            switch (move)
+            {
+                case "X":
+                    consoleService.PrintPlayerColor(move, Player.One);
+                    return;
+                case "O":
+                    consoleService.PrintPlayerColor(move, Player.Two);
+                    return;
+                default:
+                    consoleService.Print(move);
+                    return;
+            }
+        }
+            
+        private static void PrintPlayerSymbols()
+        {
+            consoleService.PrintPlayerColor(player1, Player.One);
+            consoleService.Print(" = ");
+            consoleService.PrintPlayerColor("X" + EOL, Player.One);
+            consoleService.PrintPlayerColor(player2, Player.Two);
+            consoleService.Print(" = ");
+            consoleService.PrintPlayerColor("O" + EOL, Player.Two);
+        }
+
+        private static void PrintScores()
+        {
+            consoleService.PrintPlayerColor(player1 + " " + player1Score, Player.One);
+            consoleService.Print(":");
+            consoleService.PrintPlayerColor(player2Score + " " + player2 + EOL, Player.Two);
+            consoleService.PrintLine(EOL);
+            consoleService.PrintLine("Stalemates: " + stalemateCount);
         }
     }
 }
